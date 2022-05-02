@@ -2,12 +2,12 @@ import torch
 import os
 import torchvision, timm
 
-from variation.histogram import HistogramModel
-from variation.pruning import PruneModel
-from variation.posterize import PosterizeModel
-from variation.precision import HalfPrecisionModel
-from variation.jpeg_compression import JPEGModel
-from variation.randomized_smoothing import RSModel
+from utils.variation.histogram import HistogramModel
+from utils.variation.pruning import PruneModel
+from utils.variation.posterize import PosterizeModel
+from utils.variation.precision import HalfPrecisionModel
+from utils.variation.jpeg_compression import JPEGModel
+from utils.variation.randomized_smoothing import RSModel
 
 
 
