@@ -7,15 +7,13 @@ from utils.model import get_original_and_variation
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--input", required=True, help="Input predictions path")
-parser.add_argument("--truth", required=True, help="Truth path")
-parser.add_argument("--output_dir", type=float, default=-0.15)
+parser.add_argument("--input", required=True, help="Input predictions folder")
+parser.add_argument("--output_dir", required=True, type=str)
+
 parser.add_argument("--score", default="mean-case", choices=["best-case", "worst-case", "mean-case"])
 parser.add_argument("--family", default="pure", choices=["pure", "variation", "singleton"])
 parser.add_argument("--max_drop", type=float, default=-0.15)
 args = parser.parse_args()
-
-
 
 output_filename = "stop_{}-score_{}-max_drop_{}".format(args.family, args.score, args.max_drop)
 os.makedirs(args.output_dir, exist_ok=True)
@@ -64,12 +62,15 @@ fscore = eval("score_" + args.score.replace("-", "_"))
 sorted_reversed = args.score in ["entropy"]
 
 
-matrix = np.load(args.input, allow_pickle=True).item()
-truth = np.array(np.load(args.truth))
+matrix, models = [], []
+truth = None
+for filename in os.path.join(args.input):
+    if filename == "ground_truth.npy":
+        truth = np.array(np.load(os.path.join(args.input, filename)))
 
-models = list(matrix.keys())
-matrix = np.array([matrix[m] for m in models])
-
+    matrix.append(np.load(os.path.join(args.input, filename)))
+    models.append(filename[:-4])
+matrix = np.array(matrix)
 if len(matrix.shape) == 2:
     matrix = np.expand_dims(matrix, -1)
 
