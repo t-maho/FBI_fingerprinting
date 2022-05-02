@@ -25,5 +25,8 @@ class JPEGModel(nn.Module):
         f = BytesIO()
         pil_image.save(f, format='jpeg', quality=int(self.quality))
         jpeg_image = np.asarray(Image.open(f),).astype(np.float32).transpose(2, 0, 1) / 255.0
-        jpeg_image = torch.Tensor(jpeg_image).to(0)
+        jpeg_image = torch.Tensor(jpeg_image)
+        if torch.cuda.is_available():
+            jpeg_image = jpeg_image.to(0)
+        
         return jpeg_image

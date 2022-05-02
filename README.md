@@ -2,7 +2,9 @@
 
 Code to Fingerprint any model with Benign Inputs 
 
-Top-1 data, used in the paper, is in the folder data
+Due to the lack of space, only Top-1 data is released in the GitHub.
+
+Some results of our paper need images. We provide a small set of 1000 images. These images are the ones with the highest entroyp score.
 
 
 
@@ -22,7 +24,7 @@ pip install -r requirements
 
 
 ```bash
-python known_detection.py --input ./data --score mean_case --family pure --max_drop -0.15
+python known_detection.py --input ./data/predictions --score mean_case --family pure --max_drop -0.15
 ```
 
 family argument can be choosen between: pure, variation, singleton
@@ -32,7 +34,7 @@ family argument can be choosen between: pure, variation, singleton
 
 
 ```bash
-python known_identification.py --input ./data --score mean_case --family pure --max_drop -0.15
+python known_identification.py --input ./data/predictions --score mean_case --family pure --max_drop -0.15
 ```
 
 
@@ -40,5 +42,29 @@ family argument can be choosen between: pure, variation, singleton
 
 
 
-
 ## Unknown
+
+
+### Detection
+
+
+```bash
+python unknown_detection.py --input ./data/predictions/ --output_dir ./results/ --delegate close --family pure --n_images 10 50 100 150 200
+```
+
+
+
+### Identification Pure
+
+```bash
+python unknown_detection.py --input ./data/predictions/ --output_dir ./results/ --delegate close --family pure --n_images 10 50 100 150 200
+```
+
+
+
+
+### Identification Variation (with compound)
+
+```bash
+python unknown_identification_variation.py --input ./data/predictions/ --output_dir ./results/ --delegate middle close --n_images 50 100 200 --sort_images entropy --n_gen 20
+```

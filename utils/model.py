@@ -75,7 +75,6 @@ def get_original_and_variation(model_name):
 
 
 def get_model(model_name, jpeg_module=False, preload_model=None):
-    torch.hub.set_dir("/srv/tempdd/tmaho/torch_models")
     extra_model_class = None
     use_before = False
     if model_name.lower().startswith("prune"):
@@ -145,7 +144,9 @@ def get_model(model_name, jpeg_module=False, preload_model=None):
     if extra_model_class is not None and not use_before:
         model = extra_model_class(model)
 
-    model = model.cuda(0).eval()
+    if torch.cuda.is_available():
+        model = model.cuda(0)
+    model = model.eval()
     return model
 
 def load_madry():
